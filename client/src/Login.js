@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './styles/App.css';
-import { Link } from 'react-router-dom';
 
 class Login extends Component {
     state = {
@@ -9,8 +9,7 @@ class Login extends Component {
             email: '',
             password: '',
             error: '',
-            message: '',
-            isBurning: true
+            message: ''
         }    
     }
 
@@ -25,14 +24,18 @@ class Login extends Component {
         axios.post(`http://localhost:3001/authorization`, { user })
         .then(res => {
             if (!res.data.ok) {
-                this.setState({error: res.data.error});
-                this.setState({message: ''});
-                this.setState({password: ''});
+                this.setState({
+                    error: res.data.error,
+                    message: '',
+                    password: ''
+                });
             } else {
-                this.setState({error: ''});
-                this.setState({message: res.data.message});
-                this.setState({password: ''});
-                this.setState({email: ''});
+                this.setState({
+                    error: '',
+                    message: res.data.message,
+                    password: '',
+                    email: ''
+                });
             }
         });
     }
@@ -45,24 +48,31 @@ class Login extends Component {
         this.setState({password: event.target.value});
     }
 
-    render() {     
+    render() {    
+        const {
+            error,
+            message,
+            email,
+            password
+        } = this.state 
         return (
             <div className="wrapper">
                 <div className="form-wrapper">
+                    <Link to='/' className='homeLink'>Home</Link>
                     <h1>Log In</h1>             
-                    <p className='error'>{this.state.error}</p>
-                    <p className='message'>{this.state.message}</p>
+                    <p className='error'>{error}</p>
+                    <p className='message'>{message}</p>
                     <form onSubmit={this.handleSubmit} className='signup-form'>
                         
                         <input 
-                            value={this.state.email} 
+                            value={email} 
                             onChange={this.handleChangeEmail} 
                             type='email' 
                             name='email' 
                             placeholder='Email'/>
                     
                         <input 
-                            value={this.state.password} 
+                            value={password} 
                             onChange={this.handleChangePassword} 
                             type='password' 
                             name='password' 
@@ -71,7 +81,7 @@ class Login extends Component {
                         <div className="createAccount">
                             <button type='submit'>Log In</button>
                         </div>    
-                            <Link to='Signin' className='click'>Create new account</Link>                        
+                            <Link to='signin' className='click'>Create new account</Link>                        
                     </form>
                 </div>
             </div> 

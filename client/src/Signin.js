@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './styles/App.css';
-import { Link } from 'react-router-dom';
 
 class Signin extends Component {
     state = {
@@ -11,8 +11,7 @@ class Signin extends Component {
             email: '',
             password: '',
             error: '',
-            message: '',
-            isBurning: false
+            message: ''
         }    
     }
 
@@ -29,16 +28,21 @@ class Signin extends Component {
         axios.post(`http://localhost:3001/register`, { user })
         .then(res => {
             if (!res.data.ok) {
-                this.setState({error: res.data.error});
-                this.setState({message: ''});
-                this.setState({password: ''});
+                this.setState({
+                    error: res.data.error,
+                    message: '',
+                    password: ''
+                });
+
             } else {
-                this.setState({error: ''});
-                this.setState({message: res.data.message});
-                this.setState({password: ''});
-                this.setState({email: ''});
-                this.setState({lastname: ''});
-                this.setState({username: ''});
+                this.setState({
+                    error: '',
+                    message: res.data.message,
+                    password: '',
+                    email: '',
+                    lastname: '',
+                    username: ''
+                });
             }
         });
     }
@@ -60,37 +64,47 @@ class Signin extends Component {
     } 
 
     render() {
+        const {
+            error,
+            message,
+            firstName,
+            lastName,
+            email,
+            password
+        } = this.state
         return (
             <div className="wrapper">
                 <div className="form-wrapper">
+                    <Link to='/' className='homeLink'>Home</Link>
                     <h1>Sign In</h1>
-                    <p className='error'>{this.state.error}</p>
-                    <p className='message'>{this.state.message}</p>
+                    <p className='error'>{error}</p>
+                    <p className='message'>{message}</p>
+
                     <form onSubmit={this.handleSubmit} className='signup-form'>
                     
                         <input 
-                            value={this.state.firstName} 
+                            value={firstName} 
                             onChange={this.handleChangeUserName} 
                             type='text' 
                             name='username' 
                             placeholder='First Name'/>
                         
                         <input 
-                            value={this.state.lastName} 
+                            value={lastName} 
                             onChange={this.handleChangeLastName} 
                             type='text' 
                             name='lastname' 
                             placeholder='Last Name'/>
                         
                         <input 
-                            value={this.state.email} 
+                            value={email} 
                             onChange={this.handleChangeEmail} 
                             type='email' 
                             name='email' 
                             placeholder='Email'/>
                     
                         <input 
-                            value={this.state.password} 
+                            value={password} 
                             onChange={this.handleChangePassword} 
                             type='password' 
                             name='password' 
@@ -99,8 +113,7 @@ class Signin extends Component {
                         <div className="createAccount">
                             <button type='submit'>Create Account</button>
                         </div>   
-                        <Link to='Login' className='click'>Already have an account?</Link> 
-                            
+                        <Link to='login' className='click'>Already have an account?</Link>                
                     </form>
                 </div>
             </div>
