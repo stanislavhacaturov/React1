@@ -3,6 +3,7 @@ import {BrowserRouter, Route} from 'react-router-dom';
 import Signin from './Signin';
 import Login from './Login';
 import Home from './Home';
+import TodoApp from './TodoApplication/TodoApp';
 import './styles/App.css';
 
 class App extends Component {
@@ -12,6 +13,7 @@ class App extends Component {
                 <Route path='/' exact component={Home} />
                 <Route path='/signin' component={Signin} />
                 <Route path='/login' component={Login} />
+                <Route path='/todo' component={TodoApp} />
             </BrowserRouter>    
         )
     }

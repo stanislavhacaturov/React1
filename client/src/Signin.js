@@ -48,19 +48,27 @@ class Signin extends Component {
     }
 
     handleChangeUserName = (event) => {
-        this.setState({username: event.target.value});
+        this.setState({
+            username: event.target.value
+        });
     }
 
     handleChangeLastName = (event) => {
-        this.setState({lastname: event.target.value});
+        this.setState({
+            lastname: event.target.value
+        });
     }
 
     handleChangeEmail = (event) => {
-        this.setState({email: event.target.value});
+        this.setState({
+            email: event.target.value
+        });
     }
 
     handleChangePassword = (event) => {
-        this.setState({password: event.target.value});
+        this.setState({
+            password: event.target.value
+        });
     } 
 
     render() {

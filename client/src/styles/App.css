@@ -35,12 +35,6 @@
   background-color: #ffffff;
 }
 
-form {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-}
-
 h1 {
   text-align: center;
   width: 100%;
@@ -58,14 +52,15 @@ label {
 }
 
 input {
-  padding: 10px 10px;
+  padding: 10px;
   border-radius: 5px;
   border: 1px solid #cfcfcf;
+  margin: 5px;
+  width: 92%;
 }
 
 input::placeholder {
-  font-size: 1.2em;
-  font-weight: lighter;
+  font-size: 3em;
   color: #999;
 }
 

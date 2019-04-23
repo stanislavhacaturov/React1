@@ -41,11 +41,15 @@ class Login extends Component {
     }
 
     handleChangeEmail = (event) => {
-        this.setState({email: event.target.value});
+        this.setState({
+            email: event.target.value
+        });
     }
 
     handleChangePassword = (event) => {
-        this.setState({password: event.target.value});
+        this.setState({
+            password: event.target.value
+        });
     }
 
     render() {    

@@ -7,7 +7,7 @@ class Home extends Component {
         return (
             <div className="wrapperHome">
                 <div className="form-wrapperHome">
-                    <h1>Home page</h1>             
+                    <h1>Homepage</h1>             
                     <form className='signup-formHome'>            
                         <div className="home">
                             <Link to='signin' className='homeButton'>Create new account</Link>   
