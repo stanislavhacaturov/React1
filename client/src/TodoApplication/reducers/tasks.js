@@ -1,4 +1,12 @@
-const tasks = (state = [], { id, text, done, type }) => {
+import { load } from 'redux-localstorage-simple'
+
+let TASK = load({ namespace: 'todo-list' });
+
+TASK = {
+    tasks: []
+}
+
+const tasks = (state = TASK.tasks, { id, text, done, type }) => {
     switch (type) {
         case 'ADD_TASK' :
             return [

@@ -23,11 +23,15 @@ class ToDo extends Component {
 
   addTast = ({ key }) => {
     const { taskText } = this.state;
+    const { tasks } = this.props;
 
-    if (taskText.length > 0 && key === 'Enter') {
-      const { addTast } = this.props;
+    const duplicate = tasks.find(task => task.text === taskText.trim());
+
+    if (!duplicate && taskText.trim() !== '' && key === 'Enter') {
       
-      addTast(Math.floor(Math.random() * 1000), taskText, false);
+      const { addTast } = this.props;
+
+      addTast(Math.floor(Math.random() * 1000), taskText.trim(), false);
 
       this.setState({
         taskText: ''
@@ -48,25 +52,45 @@ class ToDo extends Component {
     }
   }
 
-  editFunc = ({ target: { value }}) => {
+  editFunc = (text) => {
     this.setState({
-      taskText: value,
+      taskText: text
     });
-    console.log(this.state)
   }
+
+  getActiveTasksCounter = tasks => tasks.filter(task => !task.done).length;
+  getCompletedTasksCounter = tasks => tasks.filter(task => task.done).length;
 
   render() {
     const { taskText } = this.state;
     const { tasks, removeTask, doneTask, editTask, filters, changeFilter } = this.props
     const isTasksExist = tasks && tasks.length > 0;
     const filteredTasks = this.filterTasks(tasks, filters)
+    const getActiveTasksCounter = this.getActiveTasksCounter(tasks);
+    const getCompletedTasksCounter = this.getCompletedTasksCounter(tasks);
 
     return (
       <div className="todo-wrapper">
         <h1>Todo App</h1>
-        <ToDoInput onKeyPress={this.addTast} onChange={this.handleInputChange} value={taskText}/>
-        {isTasksExist && <ToDoList tasksList={filteredTasks} editTask={this.editFunc} doneTask={doneTask} removeTask={removeTask}/>}
-        {isTasksExist && <Footer changeFilter={changeFilter} amount={tasks.length} activeFilter={filters} />}
+        <ToDoInput 
+          onKeyPress={this.addTast} 
+          onChange={this.handleInputChange} 
+          value={taskText}/>
+
+        {isTasksExist && 
+          <ToDoList 
+            tasksList={filteredTasks} 
+            editTask={editTask} 
+            editFunc={this.editFunc} 
+            doneTask={doneTask} 
+            removeTask={removeTask}/>}
+
+        {isTasksExist && 
+          <Footer 
+            changeFilter={changeFilter} 
+            active={getActiveTasksCounter} 
+            completed={getCompletedTasksCounter} 
+            activeFilter={filters} />}
       </div>
     );
   }

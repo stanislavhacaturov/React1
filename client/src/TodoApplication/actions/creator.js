@@ -3,7 +3,7 @@ export const addTast = (id, text, done) => ({
     id,
     text,
     done
-  });
+});
 
 export const removeTask = id => ({
   type: 'REMOVE_TASK',

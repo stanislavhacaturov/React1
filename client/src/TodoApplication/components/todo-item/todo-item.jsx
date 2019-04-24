@@ -3,11 +3,18 @@ import PropTypes from 'prop-types';
 
 import './todo-item.css';
 
-const ToDoItem = ({ text, done, removeTask, id, doneTask, editTask }) => (
-  <li className="todo-item">
-    <i onClick={() => doneTask(id)} className={done ? 'mark far fa-check-circle' : 'mark far fa-circle'} />
-    <span onDoubleClick={() => editTask(id)} className={done ? 'completed text' : 'text'}>{text}</span>
-    <i onClick={() => removeTask(id)} className="fas fa-times" />
+const ToDoItem = ({ text, done, removeTask, id, doneTask, editFunc }) => (
+  <li 
+    onClick={() => doneTask(id)} 
+    className="todo-item">
+      <i 
+        className={done ? 'mark far fa-check-circle' : 'mark far fa-circle'} />
+      <span 
+        onDoubleClick={() => editFunc(text)} 
+        className={done ? 'completed text' : 'text'}>{text}</span>
+      <i 
+        onClick={() => removeTask(id)} 
+        className="fas fa-times" />
   </li>
 );
 
@@ -16,7 +23,7 @@ ToDoItem.propTypes = {
   doneTask: PropTypes.func,
   removeTask: PropTypes.func,
   id: PropTypes.number,
-  editTask: PropTypes.func
+  editFunc: PropTypes.func
 }
 
 ToDoItem.defaultProps = {
@@ -24,7 +31,7 @@ ToDoItem.defaultProps = {
   removeTask: () => {},
   id: 0,
   done: false,
-  editTask: () => {}
+  editFunc: () => {}
 }
 
 export default ToDoItem;

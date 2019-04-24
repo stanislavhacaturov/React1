@@ -18,9 +18,12 @@ const FILTERS_BTN = [
   }
 ];
 
-const Footer = ({ amount, activeFilter, changeFilter }) => (
+const Footer = ({ active, completed, activeFilter, changeFilter }) => (
   <div className="footer">
-    <span className="amount">{`${amount} Tasks left`}</span>
+    <span 
+      className="amount">{`${active} Active`}, 
+      {` ${completed} Completed`}
+    </span>
     <div className="btn-group">
       {FILTERS_BTN.map(({ text, id }) => (
         <button
@@ -34,14 +37,14 @@ const Footer = ({ amount, activeFilter, changeFilter }) => (
 );
 
 Footer.propTypes = {
-  amount: PropTypes.number,
+  active: PropTypes.number,
   activeFilter: PropTypes.string,
   changeFilter: PropTypes.func,
 }
 
 Footer.defaultProps = {
   changeFilter: () => {},
-  amount: 0,
+  active: 0,
   activeFilter: 'all',
 }
 
