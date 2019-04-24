@@ -1,4 +1,3 @@
-
 const tasks = (state = [], { id, text, done, type }) => {
     switch (type) {
         case 'ADD_TASK' :

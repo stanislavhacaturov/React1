@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
- import { addTast, removeTask, doneTask, editTask } from '../../actions/creator';
+import { addTast, removeTask, doneTask, editTask, changeFilter } from '../../actions/creator';
 
 import ToDoInput from '../../components/todo-input/todo-input';
 import ToDoList from '../../components/todo-list/todo-list';
@@ -12,7 +12,6 @@ import './todo.css';
 class ToDo extends Component {
 
   state = {
-    activeFilter: 'all',
     taskText: ''
   }
 
@@ -36,17 +35,38 @@ class ToDo extends Component {
     }
   }
 
+  filterTasks = (tasks, activeFilter) => {
+    switch (activeFilter) {
+      case 'completed':
+        return tasks.filter(task => task.done);
+        break;
+      case 'active':
+        return tasks.filter(task => !task.done);
+        break;
+      default:
+        return tasks;
+    }
+  }
+
+  editFunc = ({ target: { value }}) => {
+    this.setState({
+      taskText: value,
+    });
+    console.log(this.state)
+  }
+
   render() {
-    const { activeFilter, taskText } = this.state;
-    const { tasks, removeTask, doneTask, editTask } = this.props
+    const { taskText } = this.state;
+    const { tasks, removeTask, doneTask, editTask, filters, changeFilter } = this.props
     const isTasksExist = tasks && tasks.length > 0;
+    const filteredTasks = this.filterTasks(tasks, filters)
 
     return (
       <div className="todo-wrapper">
         <h1>Todo App</h1>
         <ToDoInput onKeyPress={this.addTast} onChange={this.handleInputChange} value={taskText}/>
-        {isTasksExist && <ToDoList tasksList={tasks} editTask={editTask} doneTask={doneTask} removeTask={removeTask}/>}
-        {isTasksExist && <Footer amount={tasks.length} activeFilter={activeFilter} />}
+        {isTasksExist && <ToDoList tasksList={filteredTasks} editTask={this.editFunc} doneTask={doneTask} removeTask={removeTask}/>}
+        {isTasksExist && <Footer changeFilter={changeFilter} amount={tasks.length} activeFilter={filters} />}
       </div>
     );
   }
@@ -54,4 +74,5 @@ class ToDo extends Component {
 
 export default connect(state => ({
   tasks: state.tasks,
-}), { addTast, removeTask, doneTask, editTask })(ToDo);
+  filters: state.filters,
+}), { addTast, removeTask, doneTask, editTask, changeFilter })(ToDo);
