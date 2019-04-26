@@ -15,13 +15,16 @@ export const doneTask = id => ({
   id
 });
 
-export const editTask = (id, temp) => ({
-  type: 'EDIT_TASK',
-  id,
-  temp
-});
-
 export const changeFilter = activeFilter => ({
   type: 'CHANGE_FILTER',
   activeFilter,
 })
+
+export const editTask = (id, text, done) => {
+  return({
+    type: 'EDIT_TASK',
+    id,
+    text,
+    done
+  })
+};

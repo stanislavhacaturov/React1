@@ -1,59 +1,66 @@
 import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
+import { editTask } from '../../actions/creator';
 import './todo-item.css';
 
 class ToDoItem extends Component {
 
   state = {
     changeInput: false,
+    taskText: this.props.text.trim()
   }
 
-  // handleInputChange = ({ target: { value }}) => {
-  //   this.setState({
-  //     taskText: value,
-  //   });
-  // }
+  handleInputChange = ({ target: { value }}) => {
+    this.setState({
+      taskText: value,
+    });
+  }
 
-  // addTast = ({ key }) => {
-  //   const { taskText } = this.state;
-  //   const { tasks } = this.props;
+  editTask = ({ key }) => {
+    const { taskText } = this.state;
+    const { id } = this.props;
+    const { done } = this.props;
 
-  //   const duplicate = tasks.find(task => task.text === taskText.trim());
+    if (taskText.trim() !== '' && key === 'Enter') {
+      const { editTask } = this.props;
 
-  //   if (!duplicate && taskText.trim() !== '' && key === 'Enter') {
-      
-  //     const { addTast } = this.props;
+      editTask(id, taskText.trim(), done);
 
-  //     addTast(Math.floor(Math.random() * 1000), taskText.trim(), false);
-
-  //     this.setState({
-  //       taskText: ''
-  //     })
-  //   }
-  // }
+      this.setState({
+        changeInput: !this.state.changeInput,
+      });
+    }
+  }
 
   changeBtn = () => {
     this.setState({
-      changeInput: true
+      changeInput: !this.state.changeInput
     })
   }
 
+  btn = (e) => {
+    e.preventDefault();
+  }
+
   render() {
-    const { text, done, removeTask, id, doneTask, editFunc } = this.props
-    const { changeInput } = this.state
+    const { text, done, removeTask, id, doneTask } = this.props
+    const { changeInput, taskText } = this.state
 
     return (
       changeInput ?
-      <input /> :
+      <input className='editInput'value={taskText} onChange={this.handleInputChange} onKeyPress={this.editTask}/> :
       <Fragment>
-        <li      
+        <li 
+          onDoubleClick={this.changeBtn}      
           className="todo-item">
-            <i 
+            <i    
+            onDoubleClick={this.btn}        
               onClick={() => doneTask(id)} 
               className={done ? 'mark far fa-check-circle' : 'mark far fa-circle'} />
             <span 
-              onDoubleClick={this.changeBtn} 
+              
               className={done ? 'completed text' : 'text'}>{text}</span>
             <i 
               onClick={() => removeTask(id)} 
@@ -64,35 +71,6 @@ class ToDoItem extends Component {
   }
 }
 
-// const ToDoItem = ({ text, done, removeTask, id, doneTask, editFunc }) => (
-//   <li 
-//     onClick={() => doneTask(id)} 
-//     className="todo-item">
-//       <i 
-//         className={done ? 'mark far fa-check-circle' : 'mark far fa-circle'} />
-//       <span 
-//         onDoubleClick={() => editFunc(text)} 
-//         className={done ? 'completed text' : 'text'}>{text}</span>
-//       <i 
-//         onClick={() => removeTask(id)} 
-//         className="fas fa-times" />
-//   </li>
-// );
-
-ToDoItem.propTypes = {
-  text: PropTypes.string,
-  doneTask: PropTypes.func,
-  removeTask: PropTypes.func,
-  id: PropTypes.number,
-  editFunc: PropTypes.func
-}
-
-ToDoItem.defaultProps = {
-  text: '',
-  removeTask: () => {},
-  id: 0,
-  done: false,
-  editFunc: () => {}
-}
-
-export default ToDoItem;
+export default connect(state => ({
+  tasks: state.tasks
+}), { editTask })(ToDoItem);

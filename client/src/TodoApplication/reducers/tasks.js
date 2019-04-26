@@ -2,7 +2,7 @@ import { load } from 'redux-localstorage-simple'
 
 let TASK = load({ namespace: 'todo-list' });
 
-if (!TASK) {
+if (!TASK.tasks) {
     TASK = {
         tasks: []
     }
@@ -19,6 +19,14 @@ const tasks = (state = TASK.tasks, { id, text, done, type }) => {
                 }
             ];
 
+        case 'EDIT_TASK' :
+            return state.map(task => task.id === id ?
+                {
+                    ...task,
+                    text: text,
+                } : task
+            )
+
         case 'REMOVE_TASK' :
             return [...state].filter(task => task.id !== id);
 
@@ -29,17 +37,6 @@ const tasks = (state = TASK.tasks, { id, text, done, type }) => {
                 }
                 return task;
             });
-
-        case 'EDIT_TASK_1' :
-        return [...state].map(task => {
-            if(task.id === id) {
-                
-            }
-            return task;
-        });
-
-        case 'EDIT_TASK_2' :
-            return [...state].filter(task => task.id === id);
             
         default:
             return state;
