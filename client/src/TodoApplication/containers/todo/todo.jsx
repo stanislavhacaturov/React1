@@ -12,7 +12,14 @@ import './todo.css';
 class ToDo extends Component {
 
   state = {
-    taskText: ''
+    taskText: '',
+    message: 'Loading...'
+  }
+
+  componentDidMount() {
+    fetch('/todo')
+      .then(res => res.text())
+      .then(res => this.setState({message: res}));
   }
 
   handleInputChange = ({ target: { value }}) => {
