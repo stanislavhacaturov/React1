@@ -27,7 +27,7 @@ class Login extends Component {
            console.log('res', res);
            const token = res.data.token;
            localStorage.setItem('token', token)
-           
+           this.props.history.push('/todo');
         }).catch(err => {
             console.log('err', err);
         })

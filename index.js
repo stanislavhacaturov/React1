@@ -2,11 +2,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
-const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
+// const session = require('express-session');
+// const MongoStore = require('connect-mongo')(session);
 
-const config = require('./config');
-const routes = require('./routes/auth');
+// const config = require('./config');
+const rout1 = require('./routes/auth');
+const rout2 = require('./routes/todoList');
 const cors = require('cors');
 
 ObjectID = mongoose.Types.ObjectId;
@@ -29,6 +30,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 // 	})
 // );
 
+
+
 mongoose.connect(
 	'mongodb://localhost:27017/test', 
 	{useNewUrlParser: true},
@@ -40,6 +43,7 @@ mongoose.connect(
 	}
 );
 
-app.use('/', routes);
+app.use('/', rout1);
+app.use('/add', rout2);
 
 // require('./config-passport')

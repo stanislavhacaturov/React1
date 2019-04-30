@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import axios from 'axios';
 
 import { addTast, removeTask, doneTask, changeFilter, editTask } from '../../actions/creator';
 
@@ -16,11 +17,11 @@ class ToDo extends Component {
     message: 'Loading...'
   }
 
-  componentDidMount() {
-    fetch('/todo')
-      .then(res => res.text())
-      .then(res => this.setState({message: res}));
-  }
+  // componentDidMount() {
+  //   fetch('/todo')
+  //     .then(res => res.text())
+  //     .then(res => this.setState({message: res}));
+  // }
 
   handleInputChange = ({ target: { value }}) => {
     this.setState({
@@ -38,10 +39,20 @@ class ToDo extends Component {
       
       const { addTast } = this.props;
 
-      addTast(Math.floor(Math.random() * 1000), taskText.trim(), false);
+      const todoItem = addTast(Math.floor(Math.random() * 1000), taskText.trim(), false)
 
       this.setState({
         taskText: ''
+      })
+
+      console.log('addtastTTTTT', todoItem)
+
+      axios.post(`http://localhost:3001/add/todoList`,
+          { todoItem }
+      ).then(res => {
+          
+      }).catch(err => {
+          console.log('err', err);
       })
     }
   }

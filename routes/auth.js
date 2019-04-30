@@ -1,4 +1,3 @@
-
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt-nodejs');
@@ -102,14 +101,12 @@ router.post('/authorization', (req, res) => {
 								error: 'Пароль неверен!',
 								fields: ['email', 'password']
 							});
-						} else {
-							//
+						} else {		
 							const payload = { email };
 							const token = jwt.sign(payload, secret, {
 							  expiresIn: '1h'
 							});
 							console.log('token', token);
-							// res.cookie('token', token, { httpOnly: true }).sendStatus(200);
 							res.status(200).send({token});
 						
 						}

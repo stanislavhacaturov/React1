@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export const addTast = (id, text, done) => ({
     type: 'ADD_TASK',
     id,
@@ -10,10 +12,19 @@ export const removeTask = id => ({
   id
 });
 
-export const doneTask = id => ({
-  type: 'DONE_TASK',
-  id
-});
+export const doneTask = id => {
+  axios.post(`http://localhost:3001/add/todoList/:id/doneTodo`,
+          { id }
+      ).then(res => {
+          
+      }).catch(err => {
+          console.log('err', err);
+      })
+  return({
+    type: 'DONE_TASK',
+    id
+  })
+};
 
 export const changeFilter = activeFilter => ({
   type: 'CHANGE_FILTER',
