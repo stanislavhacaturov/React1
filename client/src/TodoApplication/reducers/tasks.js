@@ -1,4 +1,5 @@
-import { load } from 'redux-localstorage-simple'
+import { load } from 'redux-localstorage-simple';
+import axios from 'axios';
 
 let TASK = load({ namespace: 'todo-list' });
 
@@ -7,6 +8,8 @@ if (!TASK.tasks) {
         tasks: []
     }
 }
+
+
 
 const tasks = (state = TASK.tasks, { id, text, done, type }) => {
     switch (type) {

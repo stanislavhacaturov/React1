@@ -55,7 +55,7 @@ export default function withAuth(ComponentToProtect) {
       }
       return (
         <React.Fragment>
-          <ComponentToProtect {...this.props} />
+          <ComponentToProtect />
         </React.Fragment>
       );
     }
