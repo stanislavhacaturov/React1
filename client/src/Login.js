@@ -21,23 +21,34 @@ class Login extends Component {
             password: this.state.password
         }  
 
-        axios.post(`http://localhost:3001/authorization`, { user })
-        .then(res => {
-            if (!res.data.ok) {
-                this.setState({
-                    error: res.data.error,
-                    message: '',
-                    password: ''
-                });
-            } else {
-                this.setState({
-                    error: '',
-                    message: res.data.message,
-                    password: '',
-                    email: ''
-                });
-            }
-        });
+        axios.post(`http://localhost:3001/authorization`,
+            { user }
+        ).then(res => {
+           console.log('res', res);
+           const token = res.data.token;
+           localStorage.setItem('token', token)
+           
+        }).catch(err => {
+            console.log('err', err);
+        })
+
+        // axios.post(`http://localhost:3001/authorization`, { user })
+        // .then(res => {
+        //     if (!res.data.ok) {
+        //         this.setState({
+        //             error: res.data.error,
+        //             message: '',
+        //             password: ''
+        //         });
+        //     } else {
+        //         this.setState({
+        //             error: '',
+        //             message: res.data.message,
+        //             password: '',
+        //             email: ''
+        //         });
+        //     }
+        // });
     }
 
     handleChangeEmail = (event) => {

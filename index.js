@@ -17,17 +17,17 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-app.use(
-	session({
-	  secret: config.SESSION_SECRET,
-	  resave: true,
-	  saveUninitialized: false,
-	  store: new MongoStore({
-		mongooseConnection: mongoose.connection
-	  }),
-	  expires: new Date(Date.now() + 60 * 60 * 24 * 30)
-	})
-);
+// app.use(
+// 	session({
+// 	  secret: config.SESSION_SECRET,
+// 	  resave: true,
+// 	  saveUninitialized: false,
+// 	  store: new MongoStore({
+// 		mongooseConnection: mongoose.connection
+// 	  }),
+// 	  expires: new Date(Date.now() + 60 * 60 * 24 * 30)
+// 	})
+// );
 
 mongoose.connect(
 	'mongodb://localhost:27017/test', 
@@ -42,3 +42,4 @@ mongoose.connect(
 
 app.use('/', routes);
 
+// require('./config-passport')

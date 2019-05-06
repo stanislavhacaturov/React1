@@ -1,8 +1,13 @@
+
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt-nodejs');
+const jwt = require('jsonwebtoken');
+const withAuth = require('../middleware');
 
 const models = require('../models');
+
+const secret = 'mysecretsshhh';
 
 router.post('/register', (req, res) => {
 
@@ -12,12 +17,14 @@ router.post('/register', (req, res) => {
 	const password = req.body.user.password;
 
 	if (!username || !password || !lastname || !email) {
-		res.json({
+		res.status(401)
+		.json({
 			ok: false,
 			error: 'Все поля должны быть заполнены!',
 		});
 	} else if (password.length < 3 || password.length > 16) {
-		res.json({
+		res.status(401)
+		.json({
 			ok: false,
 			error: 'Длиная пароля от 3 до 16 символов!',
 			fields: ['password']
@@ -36,23 +43,26 @@ router.post('/register', (req, res) => {
 					})
 						.then(user => {
 							console.log(user);
-							req.session.userId = user.id;
-							req.session.userEmail = user.email;
-							res.json({
+							// req.session.userId = user.id;
+							// req.session.userEmail = user.email;
+							res.status(200)
+							.json({
 								ok: true,
 								message: 'Ура! Аккаунт создан'
 							});
 						})
 						.catch(err => {
 							console.log(err);
-							res.json({
+							res.status(500)
+							.json({
 								ok: false,
 								error: 'Ошибка, попробуйте позже!'
 							});
 						});
 				});
 			} else {
-				res.json({
+				res.status(401)
+				.json({
 					ok: false,
 					error: 'Пользователь с таким Email уже существует!',
 					fields: ['email']
@@ -67,7 +77,8 @@ router.post('/authorization', (req, res) => {
 	const password = req.body.user.password;
 
 	if (!email || !password) {
-		res.json({
+		res.status(401)
+		.json({
 			ok: false,
 			error: 'Все поля должны быть заполнены!',
 		});
@@ -77,37 +88,47 @@ router.post('/authorization', (req, res) => {
 		})
 			.then(user => {
 				if (!user) {
-					res.json({
+					res.status(401)
+					.json({
 						ok: false,
 						error: 'Email неверен!',
 					});
 				} else {
 					bcrypt.compare(password, user.password, function (err, result) {
 						if (!result) {
-							res.json({
+							res.status(401)
+							.json({
 								ok: false,
 								error: 'Пароль неверен!',
 								fields: ['email', 'password']
 							});
 						} else {
-							req.session.userId = user.id;
-							req.session.userEmail = user.email;
-							res.json({
-								ok: true,
-								message: 'Готово',
+							//
+							const payload = { email };
+							const token = jwt.sign(payload, secret, {
+							  expiresIn: '1h'
 							});
+							console.log('token', token);
+							// res.cookie('token', token, { httpOnly: true }).sendStatus(200);
+							res.status(200).send({token});
+						
 						}
 					});
 				}
 			})
 			.catch(err => {
 				console.log(err);
-				res.json({
+				res.status(500)
+				.json({
 					ok: false,
 					error: 'Ошибка, попробуйте позже!'
 				});
 			});
 	}
 });
+
+router.post('/checkToken', withAuth, function(req, res) {
+	res.sendStatus(200);
+  });
 
 module.exports = router;
