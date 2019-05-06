@@ -9,10 +9,20 @@ if (!TASK.tasks) {
     }
 }
 
+let TASKS = []
+axios.get(`http://localhost:3001/todo/todoList/`,
+).then(res => {
+    console.log('res', res.data)
+    TASKS = res.data
+    return TASKS
+}).catch(err => {
+    console.log('err', err);
+})
 
+console.log('TASKS', TASKS)
 
 const tasks = (state = TASK.tasks, { id, text, done, type }) => {
-    switch (type) {
+    switch (type) {          
         case 'ADD_TASK' :
             return [
                 ...state, {

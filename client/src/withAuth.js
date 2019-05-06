@@ -17,7 +17,6 @@ export default function withAuth(ComponentToProtect) {
       axios.post(`http://localhost:3001/checkToken`,
       { token }
       ).then(res => {
-        console.log('res', res);
         this.setState({ loading: false });
         // const token = res.data.token;
         localStorage.setItem('token', token)

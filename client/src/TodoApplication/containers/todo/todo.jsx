@@ -39,20 +39,10 @@ class ToDo extends Component {
       
       const { addTast } = this.props;
 
-      const todoItem = addTast(Math.floor(Math.random() * 1000), taskText.trim(), false)
+      addTast(Math.floor(Math.random() * 1000), taskText.trim(), false)
 
       this.setState({
         taskText: ''
-      })
-
-      console.log('addtastTTTTT', todoItem)
-
-      axios.post(`http://localhost:3001/add/todoList`,
-          { todoItem }
-      ).then(res => {
-          
-      }).catch(err => {
-          console.log('err', err);
       })
     }
   }
