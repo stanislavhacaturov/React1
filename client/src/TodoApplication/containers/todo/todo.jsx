@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
-import { addTast, removeTask, doneTask, changeFilter, editTask } from '../../actions/creator';
+import { addTast, removeTask, doneTask, changeFilter, editTask, addList } from '../../actions/creator';
 
 import ToDoInput from '../../components/todo-input/todo-input';
 import ToDoList from '../../components/todo-list/todo-list';
@@ -17,19 +17,29 @@ class ToDo extends Component {
     message: 'Loading...'
   }
 
-  // componentDidMount() {
-  //   fetch('/todo')
-  //     .then(res => res.text())
-  //     .then(res => this.setState({message: res}));
-  // }
+  componentDidMount() {
+    axios.get(`http://localhost:3001/todo/todoList/`) 
+      .then(result => {
 
-  handleInputChange = ({ target: { value }}) => {
+        const data  = result.data;
+        const { addList } = this.props;
+
+        data.forEach(function(Item) {
+          addList( Item._id,Item.text, Item.done )
+        });
+        
+      })
+      .catch(err => err);
+  }
+
+  handleInputChange = (event) => {
     this.setState({
-      taskText: value,
+      taskText: event.target.value,
     });
   }
 
   addTast = ({ key }) => {
+    
     const { taskText } = this.state;
     const { tasks } = this.props;
 
@@ -39,7 +49,13 @@ class ToDo extends Component {
       
       const { addTast } = this.props;
 
-      addTast(Math.floor(Math.random() * 1000), taskText.trim(), false)
+      axios.post(`http://localhost:3001/todo/todoList/add`,
+        { taskText }
+        ).then(res => {
+          addTast(res.data._id, taskText.trim(), false)
+        }).catch(err => {
+          console.log('err', err);
+        })
 
       this.setState({
         taskText: ''
@@ -99,4 +115,4 @@ class ToDo extends Component {
 export default connect(state => ({
   tasks: state.tasks,
   filters: state.filters,
-}), { addTast, removeTask, doneTask, changeFilter, editTask })(ToDo);
+}), { addTast, removeTask, doneTask, changeFilter, editTask, addList })(ToDo);

@@ -1,28 +1,13 @@
-import { load } from 'redux-localstorage-simple';
-import axios from 'axios';
-
-let TASK = load({ namespace: 'todo-list' });
-
-if (!TASK.tasks) {
-    TASK = {
-        tasks: []
-    }
-}
-
-let TASKS = []
-axios.get(`http://localhost:3001/todo/todoList/`,
-).then(res => {
-    console.log('res', res.data)
-    TASKS = res.data
-    return TASKS
-}).catch(err => {
-    console.log('err', err);
-})
-
-console.log('TASKS', TASKS)
-
-const tasks = (state = TASK.tasks, { id, text, done, type }) => {
-    switch (type) {          
+const tasks = (state = [], { id, text, done, type }) => {
+    switch (type) {    
+        case 'ADD_LIST' :
+            return [
+                ...state, {
+                    id,
+                    text,
+                    done,
+                }
+            ]      
         case 'ADD_TASK' :
             return [
                 ...state, {

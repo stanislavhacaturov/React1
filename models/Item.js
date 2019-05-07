@@ -3,14 +3,10 @@ const Schema = mongoose.Schema;
 
 let todoSchema = new Schema(
   {
-    id: {
+    text: {
       type: String,
       required: true,
       unique: true
-    },
-    text: {
-      type: String,
-      required: true
     },
     done: {
         type: Boolean,
