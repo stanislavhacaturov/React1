@@ -33,7 +33,6 @@ class Signin extends Component {
                     message: '',
                     password: ''
                 });
-
             } else {
                 this.setState({
                     error: '',

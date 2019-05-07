@@ -3,13 +3,17 @@ const router = express.Router();
 
 const models = require('../models/Item')
 
-router.post('/todoList', (req, res) => {
+router.get('/todoList', function(req, res) {
+    models.find({}).then(function (todos) {
+        res.send(todos);
+    });
+});
 
-	const id = req.body.todoItem.id;
-	const text = req.body.todoItem.text;
-	const done = req.body.todoItem.done;
+router.post('/todoList/add', (req, res) => {
 
-	console.log(id, text, done)
+	const id = req.body.id;
+	const text = req.body.text;
+	const done = req.body.done;
 
 	let newItem = new models({ 
 		id: id,
@@ -17,21 +21,46 @@ router.post('/todoList', (req, res) => {
 		done: done
 	});
 
-	newItem.save().then(function(result){
-		console.log(result)
-	})
+	newItem.save()
 });
 
 router.post('/todoList/:id/doneTodo', function(req, res) {
-	let todoId = req.body.id;;
+	let todoId = req.body.id;
 
-	console.log('iiiiiddddddd', todoId)
-	models.findById(todoId)
-		.exec()
-		.then(function(result) {
-			result.done = !result.done;
-			return result.save();
-		})
+	models.findOne({id: todoId}, function (err, item) {
+		item.done = !item.done;
+		item.save(function (err) {
+			if(err) {
+				console.error('ERROR!');
+			}
+		});
+	})
+})
+
+router.post('/todoList/:id/removeTodo', function(req, res) {
+	let todoId = req.body.id;
+
+	models.findOneAndDelete({ id: todoId }, function (err, item) {
+		item.save(function (err) {
+			if(err) {
+				console.error('ERROR!');
+			}
+		});
+	})
+})
+
+router.post('/todoList/:id/editTodo', function(req, res) {
+	let todoId = req.body.id;
+	let todoText = req.body.text;
+
+	models.findOne({id: todoId}, function (err, item) {
+		item.text = todoText;
+		item.save(function (err) {
+			if(err) {
+				console.error('ERROR!');
+			}
+		});
+	})
 })
 
 module.exports = router;

@@ -24,7 +24,6 @@ class Login extends Component {
         axios.post(`http://localhost:3001/authorization`,
             { user }
         ).then(res => {
-           console.log('res', res);
            const token = res.data.token;
            localStorage.setItem('token', token)
            this.props.history.push('/todo');

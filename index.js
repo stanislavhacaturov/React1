@@ -44,6 +44,6 @@ mongoose.connect(
 );
 
 app.use('/', rout1);
-app.use('/add', rout2);
+app.use('/todo', rout2);
 
 // require('./config-passport')

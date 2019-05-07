@@ -106,7 +106,6 @@ router.post('/authorization', (req, res) => {
 							const token = jwt.sign(payload, secret, {
 							  expiresIn: '1h'
 							});
-							console.log('token', token);
 							res.status(200).send({token});
 						
 						}
