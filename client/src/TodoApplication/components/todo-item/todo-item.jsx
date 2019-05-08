@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-// import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { editTask } from '../../actions/creator';
@@ -20,8 +19,7 @@ class ToDoItem extends Component {
 
   editTask = ({ key }) => {
     const { taskText } = this.state;
-    const { id } = this.props;
-    const { done } = this.props;
+    const { id, done } = this.props;
 
     if (taskText.trim() !== '' && key === 'Enter') {
       const { editTask } = this.props;
