@@ -1,14 +1,14 @@
 const tasks = (state = [], { id, text, done, type }) => {
-    switch (type) {    
-        case 'ADD_LIST' :
+    switch (type) {
+        case 'ADD_LIST':
             return [
                 ...state, {
                     id,
                     text,
                     done,
                 }
-            ]      
-        case 'ADD_TASK' :
+            ]
+        case 'ADD_TASK':
             return [
                 ...state, {
                     id,
@@ -16,8 +16,7 @@ const tasks = (state = [], { id, text, done, type }) => {
                     done,
                 }
             ];
-
-        case 'EDIT_TASK' :
+        case 'EDIT_TASK':
             return state.map(task => task.id === id ?
                 {
                     ...task,
@@ -25,17 +24,17 @@ const tasks = (state = [], { id, text, done, type }) => {
                 } : task
             )
 
-        case 'REMOVE_TASK' :
+        case 'REMOVE_TASK':
             return [...state].filter(task => task.id !== id);
 
         case 'DONE_TASK':
             return [...state].map(task => {
-                if(task.id === id) {
+                if (task.id === id) {
                     task.done = !task.done;
                 }
                 return task;
             });
-            
+
         default:
             return state;
     }

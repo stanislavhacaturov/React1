@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
+import axios from 'axios';
 
 import { editTask } from '../../actions/creator';
 import './todo-item.css';
@@ -11,9 +12,9 @@ class ToDoItem extends Component {
     taskText: this.props.text.trim()
   }
 
-  handleInputChange = ({ target: { value }}) => {
+  handleInputChange = (event) => {
     this.setState({
-      taskText: value,
+      taskText: event.target.value,
     });
   }
 
@@ -29,6 +30,10 @@ class ToDoItem extends Component {
       this.setState({
         changeInput: !this.state.changeInput,
       });
+
+      axios.post(`http://localhost:3001/todo/todoList/editTodo/` + id,
+        { taskText }
+      ).catch(err => console.log('err', err))
     }
   }
 
@@ -44,6 +49,7 @@ class ToDoItem extends Component {
 
   render() {
     const { text, done, removeTask, id, doneTask } = this.props
+
     const { changeInput, taskText } = this.state
 
     return (

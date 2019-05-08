@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import ToDoItem from '../todo-item/todo-item';
 import './todo-list.css';
 
+import { addList } from '../../actions/creator';
+
 class ToDoList extends Component {
   
   render() {
@@ -18,7 +20,7 @@ class ToDoList extends Component {
             doneTask={doneTask} 
             removeTask={removeTask} 
             id={id} 
-            key={text} 
+            key={id} 
             text={text} 
             done={done} />
         ))
@@ -31,4 +33,4 @@ class ToDoList extends Component {
 export default connect(state => ({
   tasks: state.tasks,
   filters: state.filters,
-}), {  })(ToDoList);
+}), { addList })(ToDoList);

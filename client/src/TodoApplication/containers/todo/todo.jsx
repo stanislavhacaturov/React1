@@ -13,21 +13,19 @@ import './todo.css';
 class ToDo extends Component {
 
   state = {
-    taskText: '',
-    message: 'Loading...'
+    taskText: ''
   }
 
   componentDidMount() {
-    axios.get(`http://localhost:3001/todo/todoList/`) 
+    axios.get(`http://localhost:3001/todo/todoList/`)
       .then(result => {
 
-        const data  = result.data;
+        const data = result.data;
         const { addList } = this.props;
 
-        data.forEach(function(Item) {
-          addList( Item._id,Item.text, Item.done )
+        data.forEach(function (Item) {
+          addList(Item._id, Item.text, Item.done)
         });
-        
       })
       .catch(err => err);
   }
@@ -39,27 +37,31 @@ class ToDo extends Component {
   }
 
   addTast = ({ key }) => {
-    
+
     const { taskText } = this.state;
     const { tasks } = this.props;
 
     const duplicate = tasks.find(task => task.text === taskText.trim());
 
     if (!duplicate && taskText.trim() !== '' && key === 'Enter') {
-      
-      const { addTast } = this.props;
 
-      axios.post(`http://localhost:3001/todo/todoList/add`,
-        { taskText }
-        ).then(res => {
-          addTast(res.data._id, taskText.trim(), false)
-        }).catch(err => {
-          console.log('err', err);
-        })
+      const { addTast } = this.props;
 
       this.setState({
         taskText: ''
       })
+
+      axios.post(`http://localhost:3001/todo/todoList/add`,
+        { taskText }
+      ).then(result => {
+        const data = result.data;
+
+        data.forEach(function (Item) {
+          if (Item.text === taskText) {
+            addTast(Item._id, taskText.trim(), false)
+          }
+        });
+      }).catch(err => console.log('err', err))
     }
   }
 
@@ -89,23 +91,23 @@ class ToDo extends Component {
     return (
       <div className="todo-wrapper">
         <h1>Todo App</h1>
-        <ToDoInput 
-          onKeyPress={this.addTast} 
-          onChange={this.handleInputChange} 
-          value={taskText}/>
+        <ToDoInput
+          onKeyPress={this.addTast}
+          onChange={this.handleInputChange}
+          value={taskText} />
 
-        {isTasksExist && 
-          <ToDoList 
-            tasksList={filteredTasks} 
-            editTask={this.editTask} 
-            doneTask={doneTask} 
-            removeTask={removeTask}/>}
+        {isTasksExist &&
+          <ToDoList
+            tasksList={filteredTasks}
+            editTask={this.editTask}
+            doneTask={doneTask}
+            removeTask={removeTask} />}
 
-        {isTasksExist && 
-          <Footer 
-            changeFilter={changeFilter} 
-            active={getActiveTasksCounter} 
-            completed={getCompletedTasksCounter} 
+        {isTasksExist &&
+          <Footer
+            changeFilter={changeFilter}
+            active={getActiveTasksCounter}
+            completed={getCompletedTasksCounter}
             activeFilter={filters} />}
       </div>
     );

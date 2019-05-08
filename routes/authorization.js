@@ -42,8 +42,6 @@ router.post('/register', (req, res) => {
 					})
 						.then(user => {
 							console.log(user);
-							// req.session.userId = user.id;
-							// req.session.userEmail = user.email;
 							res.status(200)
 							.json({
 								ok: true,
