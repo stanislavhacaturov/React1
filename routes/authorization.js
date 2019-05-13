@@ -104,8 +104,14 @@ router.post('/authorization', (req, res) => {
 							const token = jwt.sign(payload, secret, {
 							  expiresIn: '1h'
 							});
-							res.status(200).send({token});
-						
+							res.status(200).json({ 
+								token,
+								user: {
+									id: user._id,
+									name: user.username,
+									email: user.email
+								  }
+							});
 						}
 					});
 				}

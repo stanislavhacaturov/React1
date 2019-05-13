@@ -27,22 +27,20 @@ class Signin extends Component {
 
         axios.post(`http://localhost:3001/register`, { user })
         .then(res => {
-            if (!res.data.ok) {
-                this.setState({
-                    error: res.data.error,
-                    message: '',
-                    password: ''
-                });
-            } else {
-                this.setState({
-                    error: '',
-                    message: res.data.message,
-                    password: '',
-                    email: '',
-                    lastname: '',
-                    username: ''
-                });
-            }
+            this.setState({
+                error: '',
+                message: res.data.message,
+                password: '',
+                email: '',
+                lastname: '',
+                username: ''
+            });           
+        }).catch(err => {
+            this.setState({
+                error: err.response.data.error,
+                message: '',
+                password: ''
+            });
         });
     }
 
