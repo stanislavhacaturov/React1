@@ -1,35 +1,38 @@
 const express = require('express');
 const router = express.Router();
 
-const models = require('../models/Item')
+const Items = require('../models/todoList')
 
-router.get('/todoList', function (req, res) {
-	models.find({}).then(function (todos) {
+router.post('/todoList', (req, res) => {
+	const { userId } = req.body
+
+	Items.find({ autor: userId }).then(todos => {
 		res.send(todos);
 	});
 });
 
 router.post('/todoList/add', async (req, res) => {
-	const { taskText } = req.body
+	const { taskText, userId } = req.body
 
-	const newItem = new models({
+	const newItem = new Items({
 		text: taskText,
-		done: false
+		done: false,
+		autor: userId
 	});
 
 	await newItem.save();
 
-	await models.find({}).then(function (todos) {
+	await Items.find({}).then(todos => {
 		res.send(todos);
 	});
 });
 
-router.post('/todoList/doneTodo/:id', function (req, res) {
+router.post('/todoList/doneTodo/:id', (req, res) => {
 
 	const { id } = req.params;
 
-	models.findById(id)
-		.then(function (result) {
+	Items.findById(id)
+		.then(result => {
 			result.done = !result.done;
 			res.send(result);
 			return result.save()
@@ -37,24 +40,24 @@ router.post('/todoList/doneTodo/:id', function (req, res) {
 		})
 })
 
-router.post('/todoList/removeTodo/:id', function (req, res) {
+router.post('/todoList/removeTodo/:id', (req, res) => {
 
 	const { id } = req.params;
 
-	models.findOneAndDelete({ _id: id })
-		.then(function (result) {
+	Items.findOneAndDelete({ _id: id })
+		.then(result => {
 			res.send(result);
 			return result.save()
 		})
 })
 
-router.post('/todoList/editTodo/:id', function (req, res) {
+router.post('/todoList/editTodo/:id', (req, res) => {
 	const { taskText } = req.body;
 
 	const { id } = req.params;
 
-	models.findById(id)
-		.then(function (result) {
+	Items.findById(id)
+		.then(result => {
 			result.text = taskText;
 			res.send(result);
 			return result.save()

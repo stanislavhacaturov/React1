@@ -16,9 +16,11 @@ class Login extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
 
+        const { email, password } = this.state
+        
         const user = {
-            email: this.state.email,
-            password: this.state.password
+            email,
+            password
         }  
 
         axios.post(`http://localhost:3001/authorization`,
@@ -26,28 +28,16 @@ class Login extends Component {
         ).then(res => {
            const token = res.data.token;
            localStorage.setItem('token', token)
+           const user = res.data.user;
+           localStorage.setItem('user', user.id)
            this.props.history.push('/todo');
         }).catch(err => {
-            console.log('err', err);
+            this.setState({
+                error: err.response.data.error,
+                message: '',
+                password: ''
+            });
         })
-
-        // axios.post(`http://localhost:3001/authorization`, { user })
-        // .then(res => {
-        //     if (!res.data.ok) {
-        //         this.setState({
-        //             error: res.data.error,
-        //             message: '',
-        //             password: ''
-        //         });
-        //     } else {
-        //         this.setState({
-        //             error: '',
-        //             message: res.data.message,
-        //             password: '',
-        //             email: ''
-        //         });
-        //     }
-        // });
     }
 
     handleChangeEmail = (event) => {
