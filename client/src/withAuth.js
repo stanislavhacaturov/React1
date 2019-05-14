@@ -18,7 +18,7 @@ export default function withAuth(ComponentToProtect) {
       { token }
       ).then(res => {
         this.setState({ loading: false });
-        localStorage.setItem('token', token)
+        localStorage.setItem('token', token);
       }).catch(err => {
           console.log('err', err);
           this.setState({ loading: false, redirect: true });

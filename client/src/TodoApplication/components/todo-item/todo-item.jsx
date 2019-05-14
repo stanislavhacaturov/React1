@@ -48,9 +48,9 @@ class ToDoItem extends Component {
   }
 
   render() {
-    const { text, done, removeTask, id, doneTask } = this.props
+    const { text, done, removeTask, id, doneTask } = this.props;
 
-    const { changeInput, taskText } = this.state
+    const { changeInput, taskText } = this.state;
 
     return (
       changeInput ?

@@ -11,6 +11,10 @@ let todoSchema = new Schema(
     done: {
         type: Boolean,
         required: true
+    },
+    autor: {
+      type: String,
+      required: true
     }
   },
   {
@@ -22,4 +26,4 @@ todoSchema.set('toJSON', {
   virtuals: true
 });
 
-module.exports = mongoose.model('Item', todoSchema);
+module.exports = mongoose.model('todoList', todoSchema);

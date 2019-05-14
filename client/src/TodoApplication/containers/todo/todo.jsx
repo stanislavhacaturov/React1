@@ -17,17 +17,19 @@ class ToDo extends Component {
   }
 
   componentDidMount() {
-    axios.get(`http://localhost:3001/todo/todoList/`)
-      .then(result => {
+    const userId = localStorage.getItem('user');
+    axios.post(`http://localhost:3001/todo/todoList/`,
+      { userId }
+    ).then(result => {
 
         const data = result.data;
         const { addList } = this.props;
 
-        data.forEach(function (Item) {
-          addList(Item._id, Item.text, Item.done)
+        data.forEach(Item => {
+          addList(Item._id, Item.text, Item.done);
         });
       })
-      .catch(err => err);
+    .catch(err => err);
   }
 
   handleInputChange = (event) => {
@@ -46,22 +48,23 @@ class ToDo extends Component {
     if (!duplicate && taskText.trim() !== '' && key === 'Enter') {
 
       const { addTast } = this.props;
+      const userId = localStorage.getItem('user');
 
       this.setState({
         taskText: ''
       })
 
       axios.post(`http://localhost:3001/todo/todoList/add`,
-        { taskText }
+        { taskText, userId }
       ).then(result => {
         const data = result.data;
 
-        data.forEach(function (Item) {
+        data.forEach(Item => {
           if (Item.text === taskText) {
-            addTast(Item._id, taskText.trim(), false)
+            addTast(Item._id, taskText.trim(), false);
           }
         });
-      }).catch(err => console.log('err', err))
+      }).catch(err => console.log('err', err));
     }
   }
 
@@ -82,9 +85,9 @@ class ToDo extends Component {
 
   render() {
     const { taskText } = this.state;
-    const { tasks, removeTask, doneTask, filters, changeFilter } = this.props
+    const { tasks, removeTask, doneTask, filters, changeFilter } = this.props;
     const isTasksExist = tasks && tasks.length > 0;
-    const filteredTasks = this.filterTasks(tasks, filters)
+    const filteredTasks = this.filterTasks(tasks, filters);
     const getActiveTasksCounter = this.getActiveTasksCounter(tasks);
     const getCompletedTasksCounter = this.getCompletedTasksCounter(tasks);
 

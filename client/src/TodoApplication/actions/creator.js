@@ -37,7 +37,7 @@ export const doneTask = id => {
 export const changeFilter = activeFilter => ({
   type: 'CHANGE_FILTER',
   activeFilter,
-})
+});
 
 export const editTask = (id, text, done) => ({
   type: 'EDIT_TASK',

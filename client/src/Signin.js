@@ -18,31 +18,31 @@ class Signin extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
 
+        const { username, lastname, email, password } = this.state;
+
         const user = {
-            username: this.state.username,
-            lastname: this.state.lastname,
-            email: this.state.email,
-            password: this.state.password
+            username,
+            lastname,
+            email,
+            password
         }  
 
         axios.post(`http://localhost:3001/register`, { user })
         .then(res => {
-            if (!res.data.ok) {
-                this.setState({
-                    error: res.data.error,
-                    message: '',
-                    password: ''
-                });
-            } else {
-                this.setState({
-                    error: '',
-                    message: res.data.message,
-                    password: '',
-                    email: '',
-                    lastname: '',
-                    username: ''
-                });
-            }
+            this.setState({
+                error: '',
+                message: res.data.message,
+                password: '',
+                email: '',
+                lastname: '',
+                username: ''
+            });           
+        }).catch(err => {
+            this.setState({
+                error: err.response.data.error,
+                message: '',
+                password: ''
+            });
         });
     }
 
@@ -78,7 +78,7 @@ class Signin extends Component {
             lastName,
             email,
             password
-        } = this.state
+        } = this.state;
         return (
             <div className="wrapper">
                 <div className="form-wrapper">
