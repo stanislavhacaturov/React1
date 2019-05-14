@@ -18,7 +18,8 @@ class Signin extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
 
-        const { username, lastname, email, password } = this.state
+        const { username, lastname, email, password } = this.state;
+
         const user = {
             username,
             lastname,
@@ -77,7 +78,7 @@ class Signin extends Component {
             lastName,
             email,
             password
-        } = this.state
+        } = this.state;
         return (
             <div className="wrapper">
                 <div className="form-wrapper">

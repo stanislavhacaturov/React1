@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const Items = require('../models/todoList')
+const Items = require('../models/todoList');
 
 router.post('/todoList', (req, res) => {
-	const { userId } = req.body
+	const { userId } = req.body;
 
 	Items.find({ autor: userId }).then(todos => {
 		res.send(todos);
@@ -12,7 +12,7 @@ router.post('/todoList', (req, res) => {
 });
 
 router.post('/todoList/add', async (req, res) => {
-	const { taskText, userId } = req.body
+	const { taskText, userId } = req.body;
 
 	const newItem = new Items({
 		text: taskText,
@@ -35,7 +35,7 @@ router.post('/todoList/doneTodo/:id', (req, res) => {
 		.then(result => {
 			result.done = !result.done;
 			res.send(result);
-			return result.save()
+			return result.save();
 
 		})
 })
@@ -47,7 +47,7 @@ router.post('/todoList/removeTodo/:id', (req, res) => {
 	Items.findOneAndDelete({ _id: id })
 		.then(result => {
 			res.send(result);
-			return result.save()
+			return result.save();
 		})
 })
 
@@ -60,7 +60,7 @@ router.post('/todoList/editTodo/:id', (req, res) => {
 		.then(result => {
 			result.text = taskText;
 			res.send(result);
-			return result.save()
+			return result.save();
 		})
 })
 

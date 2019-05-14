@@ -26,7 +26,7 @@ class ToDo extends Component {
         const { addList } = this.props;
 
         data.forEach(Item => {
-          addList(Item._id, Item.text, Item.done)
+          addList(Item._id, Item.text, Item.done);
         });
       })
     .catch(err => err);
@@ -61,10 +61,10 @@ class ToDo extends Component {
 
         data.forEach(Item => {
           if (Item.text === taskText) {
-            addTast(Item._id, taskText.trim(), false)
+            addTast(Item._id, taskText.trim(), false);
           }
         });
-      }).catch(err => console.log('err', err))
+      }).catch(err => console.log('err', err));
     }
   }
 
@@ -85,9 +85,9 @@ class ToDo extends Component {
 
   render() {
     const { taskText } = this.state;
-    const { tasks, removeTask, doneTask, filters, changeFilter } = this.props
+    const { tasks, removeTask, doneTask, filters, changeFilter } = this.props;
     const isTasksExist = tasks && tasks.length > 0;
-    const filteredTasks = this.filterTasks(tasks, filters)
+    const filteredTasks = this.filterTasks(tasks, filters);
     const getActiveTasksCounter = this.getActiveTasksCounter(tasks);
     const getCompletedTasksCounter = this.getCompletedTasksCounter(tasks);
 

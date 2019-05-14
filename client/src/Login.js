@@ -16,7 +16,7 @@ class Login extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
 
-        const { email, password } = this.state
+        const { email, password } = this.state;
         
         const user = {
             email,
@@ -27,9 +27,9 @@ class Login extends Component {
             { user }
         ).then(res => {
            const token = res.data.token;
-           localStorage.setItem('token', token)
+           localStorage.setItem('token', token);
            const user = res.data.user;
-           localStorage.setItem('user', user.id)
+           localStorage.setItem('user', user.id);
            this.props.history.push('/todo');
         }).catch(err => {
             this.setState({
@@ -58,7 +58,7 @@ class Login extends Component {
             message,
             email,
             password
-        } = this.state 
+        } = this.state;
         return (
             <div className="wrapper">
                 <div className="form-wrapper">
